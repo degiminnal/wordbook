@@ -150,7 +150,7 @@ class CloudTrans(Translator):
 
 
 if __name__ == '__main__':
-    trans = CloudTrans(wav_path="//degim.top/web/wordbook/pronounces/caiyun")
-    res = trans("hello")
+    trans = CloudTrans("/Volumes/web/wordbook/pronounces/caiyun")
+    res = trans("putative")
     trans.pron()
     print(json.dumps(res))

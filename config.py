@@ -14,7 +14,7 @@ def app_path():
 
 def load_config():
     try:
-        f = open(app_path() + r"\config.json", "r", encoding="utf-8")
+        f = open(os.path.join(app_path(), "config.json"), "r", encoding="utf-8")
     except:
         f = open("/volume2/homes/degiminnal/Drive/degiminnal/01_Coding/21_wordbook/config.json", "r", encoding="utf-8")
     config = json.load(f)
@@ -24,7 +24,7 @@ def load_config():
 def save_config(config):
     config = json.dumps(config)
     try:
-        f = open(app_path() + r"\config.json", "w", encoding="utf-8")
+        f = open(os.path.join(app_path(), "config.json"), "w", encoding="utf-8")
     except:
         f = open("/volume2/homes/degiminnal/Drive/degiminnal/01_Coding/21_wordbook/config.json", "w", encoding="utf-8")
     f.write(config)

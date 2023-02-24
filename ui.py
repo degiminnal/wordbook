@@ -1,8 +1,6 @@
 import wx
 import os
 import config
-import win32api
-import win32con
 import translator
 from database import DataBase
 
@@ -20,8 +18,13 @@ class WordFrame(wx.Frame):
         # frame_x = (win32api.GetSystemMetrics(win32con.SM_CXSCREEN) - frame_width) / 2
         # frame_y = (win32api.GetSystemMetrics(win32con.SM_CYSCREEN) - frame_height) / 2
         #
-        frame_x = win32api.GetSystemMetrics(win32con.SM_CXSCREEN) - frame_width
-        frame_y = 30
+        try:
+            import win32api
+            import win32con
+            frame_x = win32api.GetSystemMetrics(win32con.SM_CXSCREEN) - frame_width
+        except:
+            frame_x = 1920 - frame_width - 5
+        frame_y = 20
         frame_x, frame_y = int(frame_x), int(frame_y)
         wx.Frame.__init__(self, None, -1, 'Word Book', pos=(frame_x, frame_y), size=(frame_width, frame_height))
         self.SetMaxSize((frame_width, frame_height))
@@ -46,7 +49,7 @@ class WordFrame(wx.Frame):
         self.info_txt = wx.StaticText(panel, -1, "Press enter to submit!", pos=(120, 230), size=(350, 30), style=wx.ALIGN_RIGHT)
 
         icon = wx.Icon()
-        icon.LoadFile(config.app_path() + r"\word.ico", wx.BITMAP_TYPE_ICO)
+        icon.LoadFile(os.path.join(config.app_path(), "word.ico"), wx.BITMAP_TYPE_ICO)
         self.SetIcon(icon)
 
         self.Bind(wx.EVT_BUTTON, self.search_word, self.search_bnt)
@@ -134,6 +137,6 @@ class WordFrame(wx.Frame):
         if not os.path.exists(self.config["log_dir"]):
             f = open(self.config["log_dir"], "w", encoding="utf-8")
             f.close()
-        f = open(config.app_path() + r'\log.txt', 'a+', encoding='utf-8')
+        f = open(os.path.join(config.app_path(), 'log.txt'), 'a+', encoding='utf-8')
         f.write(f"{content}\n")
         f.close()
