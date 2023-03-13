@@ -8,3 +8,7 @@ trans failed: word:catalogues api:caiyun
 trans failed: word:detailing api:caiyun
 trans failed: word:putative api:caiyun
 trans failed: word:putative api:caiyun
+trans failed: word:prominent api:caiyun
+trans failed: word:prevalence api:caiyun
+trans failed: word:prominent api:caiyun
+trans failed: word:modularity api:caiyun

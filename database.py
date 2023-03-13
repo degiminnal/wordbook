@@ -34,7 +34,7 @@ class DataBase:
             # dic["wav_path"] = dic["wav_path"][dic["wav_path"].index("pronounces"):]
             dic = json.dumps(dic, ensure_ascii=False)
             dic = escape(dic)
-            sql = f"INSERT INTO translations(word, api, json) VALUES('{word}','{api}','{dic}')"
+            sql = "INSERT INTO translations(word, api, json) VALUES('{}','{}','{}')".format(word, api, dic)
             self.cursor.execute(sql)
             self.db.commit()
             return True
@@ -45,8 +45,8 @@ class DataBase:
         try:
             word_data = [escape(data) if str(type(data)) == "<class 'str'>" else data for data in word_data]
             word, sentence, paper, coll_date, period = word_data
-            sql = f"INSERT INTO words(word, sentence, paper, coll_date, review_date, period) VALUES" \
-                  f" ('{word}','{sentence}','{paper}','{coll_date}','{coll_date}','{period}')"
+            sql = "INSERT INTO words(word, sentence, paper, coll_date, review_date, period) VALUES" \
+                  " ('{}','{}','{}','{}','{}','{}')".format(word, sentence, paper, coll_date, coll_date, period)
             self.cursor.execute(sql)
             self.db.commit()
             return True
@@ -54,7 +54,7 @@ class DataBase:
             return False
 
     def translation_exists(self, word, api) -> bool:
-        sql = f"SELECT * FROM translations WHERE word='{word}' AND api='{api}'"
+        sql = "SELECT * FROM translations WHERE word='{}' AND api='{}'".format(word, api)
         self.cursor.execute(sql)
         _translations = self.cursor.fetchall()
         if len(_translations) == 0:
@@ -74,7 +74,7 @@ class DataBase:
             for i in range(_word[2]):
                 review_date = _word[1] + timedelta(days=_word[i + 3])
                 if datetime.now().date() <= review_date:
-                    sql = f"UPDATE words SET review_date='{review_date}', next='{i+1}' WHERE words.index={_word[0]}"
+                    sql = "UPDATE words SET review_date='{}', next='{}' WHERE words.index={}".format(review_date, i+1, _word[0])
                     self.cursor.execute(sql)
                     self.db.commit()
                     break
