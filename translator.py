@@ -17,12 +17,13 @@ class Translator:
             "wav_path": "",
         }
 
-    def __call__(self, word, pron=False):
+    def __call__(self, word, queue, pron=False):
         self.__init__(self.wav_path)
         self.word = word
         self.trans()
-        if pron:
-            self.pron()
+        if True:
+            # self.pron()
+            queue.put(self)
         wp = f"{self.wav_path}{self.word}.wav"
         wp = wp[wp.index("pronounces"):]
         self.result['wav_path'] = wp
@@ -144,7 +145,7 @@ class CloudTrans(Translator):
     def pron(self):
         super().pron()
         self.pronUrl = self.pron_url(self.word)[8:]
-        print(self.pronUrl)
+        # print(self.pronUrl)
         cookies = {
         }
         headers = {

@@ -6,11 +6,12 @@ from database import DataBase
 
 
 class WordFrame(wx.Frame):
-    def __init__(self):
+    def __init__(self, queue):
         self.config = config.load_config()
         self.database = DataBase(**self.config)
         frame_width = 520
         frame_height = 300
+        self.queue = queue
         self.translators = {
             "caiyun": translator.CloudTrans(wav_path=self.config["wav_path_caiyun"])
         }
@@ -77,7 +78,7 @@ class WordFrame(wx.Frame):
                     if self.database.translation_exists(word, api_name):
                         flag = True
                         continue
-                    dic = trans(word)
+                    dic = trans(word, self.queue)
                     res = self.database.insert_single_trans(word, dic, api_name)
                     if res is True:
                         flag = True
@@ -117,12 +118,12 @@ class WordFrame(wx.Frame):
                     if self.database.translation_exists(word, api_name):
                         self.info_txt.SetLabelText(f"The translation of '{word}' with {api_name} api exists.")
                         continue
-                    dic = trans(word)
+                    dic = trans(word, self.queue)
                     res = self.database.insert_single_trans(word, dic, api_name)
                     if res is True:
                         self.info_txt.SetLabelText(f"The translated '{word}' with {api_name} api successfully.")
                     else:
-                        self.log(f"trans failed: word:{word} api:{api_name}")
+                        self.log(f"trans failed: word:{word}  api:{api_name}")
                         self.info_txt.SetLabelText(f"Error, Can't insert translation into database!")
                 except:
                     self.log(f"trans failed: word:{word} api:{api_name}")
